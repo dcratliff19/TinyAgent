@@ -4,6 +4,8 @@ from pywizlight import discovery
 from TinyAgent.prompts.tinyReAct import PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX
 from TinyExampleAgent import TinyAgent, TinyPrompt, TinyMemory, TinyParser, TinyTool, TinyLLM
 
+LLM_PATH = "models/Nous-Hermes-2-Mistral-7B-DPO.Q4_K_M.gguf"
+
 async def async_get_devices():
 
     all_devices = []
@@ -31,7 +33,7 @@ class get_devices(TinyTool):
 
 tools = {"get_devices": get_devices()}
 llm = TinyLLM(llm=Llama(
-      model_path="/home/dylan/.cache/gpt4all/Nous-Hermes-2-Mistral-7B-DPO.Q4_K_M.gguf",
+      model_path=LLM_PATH,
         n_batch=1000,
         n_gpu_layers=33,
         n_ctx=10000,
