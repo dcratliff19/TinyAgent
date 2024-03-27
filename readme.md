@@ -9,3 +9,4 @@ There are 7 main classes that make up TinyAgent
 - **Message** - Handles user or agent messages. 
 - **Parser** - Handles parsing the output of language model.
 - **Prompt** - Handles the prompt assembly. 
+- **Tool** - Handles execution of tools when a LLM calls upon them.
