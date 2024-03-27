@@ -4,11 +4,11 @@ from TinyAgent.Message import Message
 
 class Agent(ABC):
 
-    def __init__(self, promptManager, memory, outputParser, tools, llm, max_execution=5):
+    def __init__(self, prompt, memory, parser, tools, llm, max_execution=5):
         
-        self.promptManager = promptManager
+        self.prompt = prompt
         self.memory = memory
-        self.outputParser = outputParser
+        self.parser = parser
         self.tools = tools
         self.llm = llm
         self.max_execution = max_execution
@@ -16,30 +16,37 @@ class Agent(ABC):
     @abstractmethod
     def invoke(self, prompt):
 
-        self.promptManager.reset_scractch_pad()
+        #Clear the scratch pad
+        self.prompt.reset_scractch_pad()
+        #Add the prompt memory
         self.memory.add_user_message(Message("user", prompt))
-        self.promptManager.update_scractch_pad(self.promptManager.thought_template)
+        #Force a thought
+        self.prompt.update_scratch_pad(self.prompt.thought_template)
         execution_count = 0
-
+        #Only allow 5 executions.
         while execution_count < self.max_execution:
-
-            response = self.llm.query(self.promptManager.get_prompt(self.memory))
-            self.promptManager.update_scractch_pad(response)
+            
+            #Query the language model for a response.
+            response = self.llm.query(self.prompt.get_prompt(self.memory))
+            #Update the scratch pad with the response in case it is needed 
+            #on another loop.
+            self.prompt.update_scratch_pad(response)
 
             try:
-                action_json = json.loads(self.outputParser.parse(response, "```json", "```"))
+                #Use the parser to parse out the json returned
+                action_json = json.loads(self.parser.parse(response, "```json", "```"))
                 if action_json["action"] == "Final Answer":
 
                     self.memory.add_agent_message(Message("agent", action_json['action_input']))
                     return action_json['action_input']
                     
                 if action_json["action"] in self.tools:
-
+                    #Call the tool and update the scratch pad with the response.
                     tool_response = self.tools[action_json["action"]].run()
-                    self.promptManager.update_scractch_pad("\nObservation (from tool use): " + str(tool_response) + "\nThought: ")
+                    self.prompt.update_scratch_pad("\nObservation (from tool use): " + str(tool_response) + "\nThought: ")
                 
             except Exception as e:
-                self.promptManager.update_scractch_pad("\nObservation (from error): Your previous response did not contain a valid JSON response. The following error was found - " + str(e) + "\nThought: ")
+                self.prompt.update_scratch_pad("\nObservation (from error): Your previous response did not contain a valid JSON response. The following error was found - " + str(e) + "\nThought: ")
             
             execution_count += 1
 
