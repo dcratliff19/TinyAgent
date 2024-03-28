@@ -27,13 +27,11 @@ class Agent(ABC):
         #Only allow x amount executions.
         while execution_count < self.max_execution:
 
-            print(self.prompt.get_prompt(self.memory))
             #Query the language model for a response.
             response = self.llm.query(self.prompt.get_prompt(self.memory))
             #Update the scratch pad with the response in case it is needed 
             #on another loop.
             self.prompt.update_scratch_pad(response)
-            print(self.prompt.get_prompt(self.memory))
             try:
                 #Use the parser to parse out the json returned
                 action_json = json.loads(self.parser.parse(response, "```json", "```"))

@@ -17,3 +17,10 @@
 4. Install the python requirements: `python3 -m pip install -r requirements.txt`
 5. Install llama_cpp with GPU support: https://michaelriedl.com/2023/09/10/llama2-install-gpu.html
 5. Run the example: `python3 TinyAgentTest.py`
+
+
+# TODO:
+- Add in a debug logging functionality. It should be able to be turned on/off with a env variable change.
+- Support ChatGPT, Google Claud out of the box.
+- Support general chat agents out of the box.
+- Change default toolset to something more usable for the average user.
