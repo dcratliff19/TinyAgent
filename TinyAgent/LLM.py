@@ -7,4 +7,4 @@ class LLM(ABC):
         self.llm = llm
     
     def query(self, query):
-        return self.llm(query, max_tokens=32000, stop=["Observation:", "User:"])['choices'][0]['text']
+        return self.llm(query, max_tokens=32000, stop=["Observation", "User:"])['choices'][0]['text']

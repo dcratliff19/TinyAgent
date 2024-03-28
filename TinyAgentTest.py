@@ -6,38 +6,34 @@ from TinyExampleAgent import TinyAgent, TinyPrompt, TinyMemory, TinyParser, Tiny
 
 LLM_PATH = "models/Nous-Hermes-2-Mistral-7B-DPO.Q4_K_M.gguf"
 
-async def async_get_devices():
-
-    all_devices = []
-
-    bulbs = await discovery.discover_lights(broadcast_space="192.168.0.255")
-    for bulb in bulbs:
-
-        state = await bulbs[0].updateState()
-        all_devices.append({"device": bulb, "brightness": state.get_brightness(), "state": state.get_state(), "color_temp": state.get_colortemp(), "color_rbg": state.get_rgb()})
-
-    return all_devices
-
 class get_devices(TinyTool):
     
     def run(self):
 
+        all_devices = []
+
         loop = asyncio.get_event_loop()
-        devices = loop.run_until_complete(async_get_devices())
-        return "List of all smart devices found - " + str(devices)
+        bulbs = loop.run_until_complete(discovery.discover_lights(broadcast_space="192.168.0.255"))
+        for bulb in bulbs:
+
+            state = loop.run_until_complete(bulbs[0].updateState())
+            all_devices.append({"device": bulb, "brightness": state.get_brightness(), "state": state.get_state(), "color_temp": state.get_colortemp(), "color_rbg": state.get_rgb()})
+
+        return "List of all smart devices found - " + str(all_devices)
     
     def error(self):
-        return "List of all smart devices found - [None]"
+        return "No smart devices found."
 
 
 
 tools = {"get_devices": get_devices()}
+
 llm = TinyLLM(llm=Llama(
       model_path=LLM_PATH,
         n_batch=1000,
         n_gpu_layers=33,
         n_ctx=10000,
-        verbose=False, temp=0))
+        verbose=True))
 prompt = TinyPrompt(PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX)
 memory = TinyMemory()
 parser = TinyParser()

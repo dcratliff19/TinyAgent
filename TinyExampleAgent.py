@@ -1,7 +1,7 @@
 
 from TinyAgent import Agent, Prompt, Tool, Message, Memory, Parser, LLM
 
-##Implements the TinyAgent Library into  TinyAgent. Uses default functionality.
+##Implements the TinyAgent Library into a TinyAgent. Uses default functionality.
 class TinyLLM(LLM):
 
     def __init__(self, llm):

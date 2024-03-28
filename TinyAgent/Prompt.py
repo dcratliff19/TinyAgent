@@ -8,8 +8,8 @@ class Prompt(ABC):
         self.system_template = PREFIX + TOOLS + FORMAT_INSTRUCTIONS + SUFFIX
         self.user_template = "\n<|im_start|>user \nUser: "
         self.agent_template = "\n<|im_start|>assistant \nAgent: "
-        self.thought_template = "\n<|im_start|>assistant \nThought:"
-        self.observation_template = "\n<|im_start|>assistant \nObservation: "
+        self.thought_template = "\n<|im_start|>assistant \nThought"
+        self.observation_template = "\n<|im_start|>assistant \nObservation"
         self.end_template = "<|im_end|>\n"
 
         self.prompt = self.system_template
@@ -21,7 +21,7 @@ class Prompt(ABC):
         
         #Combine the messages into one history
         all_history = ""
-        for message in memory.history:
+        for message in memory.history[:10]:
             if message.role == 'user':
                 all_history += self.user_template + message.content + self.end_template
             else:

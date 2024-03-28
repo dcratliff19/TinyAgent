@@ -21,17 +21,19 @@ class Agent(ABC):
         #Add the prompt memory
         self.memory.add_user_message(Message("user", prompt))
         #Force a thought
-        self.prompt.update_scratch_pad(self.prompt.thought_template)
-        execution_count = 0
-        #Only allow 5 executions.
+        self.prompt.update_scratch_pad(self.prompt.thought_template + " 1:")
+        execution_count = 1
+        
+        #Only allow x amount executions.
         while execution_count < self.max_execution:
-            
+
+            print(self.prompt.get_prompt(self.memory))
             #Query the language model for a response.
             response = self.llm.query(self.prompt.get_prompt(self.memory))
             #Update the scratch pad with the response in case it is needed 
             #on another loop.
             self.prompt.update_scratch_pad(response)
-
+            print(self.prompt.get_prompt(self.memory))
             try:
                 #Use the parser to parse out the json returned
                 action_json = json.loads(self.parser.parse(response, "```json", "```"))
@@ -43,10 +45,10 @@ class Agent(ABC):
                 if action_json["action"] in self.tools:
                     #Call the tool and update the scratch pad with the response.
                     tool_response = self.tools[action_json["action"]].run()
-                    self.prompt.update_scratch_pad("\nObservation (from tool use): " + str(tool_response) + "\nThought: ")
+                    self.prompt.update_scratch_pad(self.prompt.observation_template + " " + str(execution_count) + ": " + str(tool_response) + self.prompt.thought_template + " " + str(execution_count + 1) + ":")
                 
             except Exception as e:
-                self.prompt.update_scratch_pad("\nObservation (from error): Your previous response did not contain a valid JSON response. The following error was found - " + str(e) + "\nThought: ")
+                self.prompt.update_scratch_pad(self.prompt.observation_template + " " + str(execution_count) + ": Your previous response did not contain a valid JSON response. The following error was found - " + str(e) + self.prompt.thought_template + " " + str(execution_count) + ":")
             
             execution_count += 1
 

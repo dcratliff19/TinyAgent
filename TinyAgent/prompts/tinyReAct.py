@@ -8,7 +8,7 @@ get_devices {} - a tool to get all smart devices on the network.
 """
 FORMAT_INSTRUCTIONS = """Use a json blob to specify a tool by providing an action key (tool name) and an action_input key (tool input).
 
-Valid "action" values: "Final Answer" or get_devices
+Valid "action" values: "Final Answer" or get_devices. 
 
 Provide only ONE action per $JSON_BLOB, as shown:
 
@@ -22,15 +22,16 @@ Provide only ONE action per $JSON_BLOB, as shown:
 Follow this format:
 
 <|im_start|>user \nUser: input question to answer<|im_end|>
-<|im_start|>assistant \nThought: consider previous and subsequent steps
-Action:
+<|im_start|>assistant 
+Thought 1: consider previous and subsequent steps
+Action 1:
 ```json
 $JSON_BLOB
 ```
-Observation: action result
+Observation 1: action result
 ... (repeat Thought/Action/Observation N times)
-Thought: I know what to respond
-Action:
+Thought 2: I know what to respond
+Action 2:
 ```json
 {
   "action": "Final Answer",
