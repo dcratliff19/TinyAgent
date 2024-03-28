@@ -37,7 +37,7 @@ llm = TinyLLM(llm=Llama(
         n_batch=1000,
         n_gpu_layers=33,
         n_ctx=10000,
-        verbose=False, temp=0.3))
+        verbose=False, temp=0))
 prompt = TinyPrompt(PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX)
 memory = TinyMemory()
 parser = TinyParser()
