@@ -1,6 +1,6 @@
-from llama_cpp import Llama
 from TinyAgent.agents.TinyChatAgent import ChatAgent, ChatLLM, ChatMemory, ChatMessage, ChatParser, ChatPrompt, ChatTool
 from TinyAgent.prompts.TinyChat import PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX
+from llama_cpp import Llama
 
 #Change this value based on your model and your GPU VRAM pool.
 n_gpu_layers = 33 

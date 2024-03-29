@@ -19,13 +19,13 @@
 5. Run the example: `python3 TinyAgentTest.py`
 
 
-## Agent Examples
+# Agent Examples
 
-#### Chat Agent
+### Chat Agent
 ```python
-from llama_cpp import Llama
 from TinyAgent.agents.TinyChatAgent import ChatAgent, ChatLLM, ChatMemory, ChatMessage, ChatParser, ChatPrompt, ChatTool
 from TinyAgent.prompts.TinyChat import PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX
+from llama_cpp import Llama
 
 #Change this value based on your model and your GPU VRAM pool.
 n_gpu_layers = 33 
@@ -53,13 +53,13 @@ while True:
 
 ```
 
-#### Tool Agent
+### Tool Agent
 ```python
-from llama_cpp import Llama
-import asyncio
-from pywizlight import discovery
 from TinyAgent.prompts.TinyReAct import PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX
 from TinyAgent.agents.TinyToolAgent import ToolAgent, ToolPrompt, ToolMemory, ToolParser, ToolTool, ToolLLM
+from pywizlight import discovery
+from llama_cpp import Llama
+import asyncio
 
 ## Create a custom tool!
 class get_devices(ToolTool):
@@ -87,6 +87,7 @@ class get_devices(ToolTool):
 
 
 tools = {"get_devices": get_devices()}
+#Assemble the components of the agent. 
 llm = ToolLLM(Llama(
       model_path="models/Nous-Hermes-2-Mistral-7B-DPO.Q4_K_M.gguf",
         n_batch=1000,
@@ -98,6 +99,7 @@ memory = ToolMemory()
 parser = ToolParser()
 agent = ToolAgent(prompt, memory, parser, tools, llm)
 
+#Use the agent!
 while True:
     print("Agent:", agent.invoke(input("User: ")))
 ```
