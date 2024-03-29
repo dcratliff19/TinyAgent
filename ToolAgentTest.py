@@ -2,11 +2,9 @@ from llama_cpp import Llama
 import asyncio
 from pywizlight import discovery
 from TinyAgent.prompts.tinyReAct import PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX
-from TinyExampleAgent import TinyAgent, TinyPrompt, TinyMemory, TinyParser, TinyTool, TinyLLM
+from TinyAgent.agents.TinyToolAgent import ToolAgent, ToolPrompt, ToolMemory, ToolParser, ToolTool, ToolLLM
 
-LLM_PATH = "models/Nous-Hermes-2-Mistral-7B-DPO.Q4_K_M.gguf"
-
-class get_devices(TinyTool):
+class get_devices(ToolTool):
     
     def run(self):
 
@@ -26,18 +24,19 @@ class get_devices(TinyTool):
 
 
 
+LLM_PATH = "models/Nous-Hermes-2-Mistral-7B-DPO.Q4_K_M.gguf"
 tools = {"get_devices": get_devices()}
 
-llm = TinyLLM(llm=Llama(
+llm = ToolLLM(Llama(
       model_path=LLM_PATH,
         n_batch=1000,
         n_gpu_layers=33,
         n_ctx=10000,
-        verbose=True))
-prompt = TinyPrompt(PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX)
-memory = TinyMemory()
-parser = TinyParser()
-agent = TinyAgent(prompt, memory, parser, tools, llm)
+        verbose=False))
+prompt = ToolPrompt(PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX)
+memory = ToolMemory()
+parser = ToolParser()
+agent = ToolAgent(prompt, memory, parser, tools, llm)
 
 while True:
     prompt = input("User: ")
