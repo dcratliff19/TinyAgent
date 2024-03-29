@@ -107,5 +107,4 @@ while True:
 # TODO:
 - Add in a debug logging functionality. It should be able to be turned on/off with a env variable change.
 - Support ChatGPT, Google Claud out of the box.
-- Support general chat agents out of the box.
 - Change default toolset to something more usable for the average user.
