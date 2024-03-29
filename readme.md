@@ -19,6 +19,89 @@
 5. Run the example: `python3 TinyAgentTest.py`
 
 
+## Agent Examples
+
+#### Chat Agent
+```python
+from llama_cpp import Llama
+from TinyAgent.agents.TinyChatAgent import ChatAgent, ChatLLM, ChatMemory, ChatMessage, ChatParser, ChatPrompt, ChatTool
+from TinyAgent.prompts.TinyChat import PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX
+
+#Change this value based on your model and your GPU VRAM pool.
+n_gpu_layers = 33 
+#Should be between 1 and n_ctx, consider the amount of VRAM in your GPU.
+n_batch = 1000  
+
+#Create the LLM.
+_llm = Llama(
+      model_path="models/Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf",
+        n_batch=n_batch,
+        n_gpu_layers=n_gpu_layers,
+        n_ctx=10000,
+        verbose=False)
+
+#Assemble the components of the agent. 
+prompt = ChatPrompt(PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX)
+llm = ChatLLM(_llm)
+memory = ChatMemory()
+parser = ChatParser()
+agent = ChatAgent(prompt, memory, parser, [], llm)
+
+#Use the agent!
+while True:
+  print("Agent:", agent.invoke(input("User: ")))
+
+```
+
+#### Tool Agent
+```python
+from llama_cpp import Llama
+import asyncio
+from pywizlight import discovery
+from TinyAgent.prompts.TinyReAct import PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX
+from TinyAgent.agents.TinyToolAgent import ToolAgent, ToolPrompt, ToolMemory, ToolParser, ToolTool, ToolLLM
+
+## Create a custom tool!
+class get_devices(ToolTool):
+    
+    def run(self):
+
+        all_devices = []
+
+        loop = asyncio.get_event_loop()
+        bulbs = loop.run_until_complete(discovery.discover_lights(broadcast_space="192.168.0.255"))
+        for bulb in bulbs:
+
+            state = loop.run_until_complete(bulbs[0].updateState())
+            all_devices.append({"device": bulb, 
+                                "brightness": state.get_brightness(), 
+                                "state": state.get_state(), 
+                                "color_temp": state.get_colortemp(), 
+                                "color_rbg": state.get_rgb()})
+
+        return "List of all smart devices found - " + str(all_devices)
+    
+    def error(self):
+        return "No smart devices found."
+
+
+
+tools = {"get_devices": get_devices()}
+llm = ToolLLM(Llama(
+      model_path="models/Nous-Hermes-2-Mistral-7B-DPO.Q4_K_M.gguf",
+        n_batch=1000,
+        n_gpu_layers=33,
+        n_ctx=10000,
+        verbose=False))
+prompt = ToolPrompt(PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX)
+memory = ToolMemory()
+parser = ToolParser()
+agent = ToolAgent(prompt, memory, parser, tools, llm)
+
+while True:
+    print("Agent:", agent.invoke(input("User: ")))
+```
+
 # TODO:
 - Add in a debug logging functionality. It should be able to be turned on/off with a env variable change.
 - Support ChatGPT, Google Claud out of the box.
