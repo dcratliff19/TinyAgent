@@ -1,5 +1,5 @@
 from TinyAgent.prompts.TinyReAct import PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX
-from TinyAgent.agents.TinyToolAgent import ToolAgent, ToolPrompt, ToolMemory, ToolParser, ToolTool, ToolLLM
+from TinyAgent.agents.TinyTool import ToolAgent, ToolPrompt, ToolMemory, ToolParser, ToolTool, ToolLLM
 from pywizlight import discovery
 from llama_cpp import Llama
 import asyncio
