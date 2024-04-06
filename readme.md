@@ -11,7 +11,7 @@
 - **Tool** - Handles execution of tools when a LLM calls upon them.
 
 #### Run the example:
-1. Download a model: https://huggingface.co/NousResearch/Nous-Hermes-2-Mistral-7B-DPO-GGUF/blob/main/Nous-Hermes-2-Mistral-7B-DPO.Q4_K_M.gguf
+1. Download a model in `.gguf` format. The [Nous-Hermes-2-Mistral-7b-DPO](https://huggingface.co/NousResearch/Nous-Hermes-2-Mistral-7B-DPO-GGUF/blob/main/Nous-Hermes-2-Mistral-7B-DPO.Q4_K_M.gguf) is a great instruction following model.
 2. Place the model in the `models/` folder.
 3. Update `LLM_PATH` in the TinyAgentTest.py file.
 4. Install the python requirements: `python3 -m pip install -r requirements.txt`

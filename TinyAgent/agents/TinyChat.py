@@ -60,7 +60,6 @@ class ChatAgent(Agent):
         #Add the user prompt to the memory
         self.memory.add_user_message(Message("user", prompt))
         #Query the language model for a response.
-        print(self.prompt.get_prompt(self.memory) + self.prompt.agent_template)
         response = self.llm.query(self.prompt.get_prompt(self.memory))
         #Update the scratch pad with the response in case it is neede
         self.memory.add_user_message(Message("ai", response))

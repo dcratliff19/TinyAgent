@@ -5,7 +5,7 @@ from llama_cpp import Llama
 #Change this value based on your model and your GPU VRAM pool.
 n_gpu_layers = 33 
 #Should be between 1 and n_ctx, consider the amount of VRAM in your GPU.
-n_batch = 1000  
+n_batch = 10000  
 
 
 #Assemble the components of the agent. 
@@ -15,7 +15,7 @@ llm = ChatLLM(Llama(
         n_batch=n_batch,
         n_gpu_layers=n_gpu_layers,
         n_ctx=10000,
-        verbose=False))
+        verbose=True))
 memory = ChatMemory()
 parser = ChatParser()
 agent = ChatAgent(prompt, memory, parser, [], llm)
