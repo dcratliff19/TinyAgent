@@ -1,4 +1,4 @@
-from TinyAgent import Agent, Prompt, Tool, Message, Memory, Parser, LLM
+from TinyAgent import Agent, Prompt, Message, Memory, Parser, LLM
 
 ##Implements the TinyAgent Library into a TinyAgent. Uses default functionality.
 class ChatLLM(LLM):
@@ -8,16 +8,6 @@ class ChatLLM(LLM):
     
     def query(self, query):
         return super().query(query)
-
-class ChatTool(Tool):
-    def __init__(self):
-        super().__init__()
-
-    def run(self):
-        return super().run()
-    
-    def error(self):
-        return super().error()
 
 class ChatMessage(Message):
     
@@ -55,22 +45,12 @@ class ChatAgent(Agent):
     
     def invoke(self, prompt):
 
-        #Set the scratch pad to the agent template.
-        self.prompt.scratch_pad = self.prompt.agent_template
-        #Add the user prompt to the memory
-        self.memory.add_user_message(Message("user", prompt))
-        #Query the language model for a response.
-        response = self.llm.query(self.prompt.get_prompt(self.memory))
-        #Update the scratch pad with the response in case it is neede
-        self.memory.add_user_message(Message("ai", response))
-
-        #return the response.
-        return response
+        return super().invoke(prompt)
 
 class ChatPrompt(Prompt):
 
-    def __init__(self, PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX):
-        super().__init__(PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX)
+    def __init__(self, system_template):
+        super().__init__(system_template)
     
     def get_prompt(self, memory):
         return super().get_prompt(memory)

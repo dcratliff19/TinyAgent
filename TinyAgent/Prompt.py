@@ -3,9 +3,9 @@ from abc import ABC, abstractmethod
 
 class Prompt(ABC):
 
-    def __init__(self, PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX):
+    def __init__(self, system_template):
         
-        self.system_template = PREFIX + TOOLS + FORMAT_INSTRUCTIONS + SUFFIX
+        self.system_template = system_template
         self.user_template = "\n<|im_start|>user \nUser: "
         self.agent_template = "\n<|im_start|>assistant \nAgent: "
         self.thought_template = "\n<|im_start|>assistant \nThought"
