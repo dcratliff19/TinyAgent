@@ -13,7 +13,7 @@ These agents are provided by TinyAgent out of the box.
 - **Message** - Handles user or agent messages. 
 - **Parser** - Handles parsing the output of language model.
 - **Prompt** - Handles the prompt assembly. 
-- **Tool** - Handles execution of tools when a LLM calls upon them.
+- **Tool** - Handles execution of tools when an LLM calls upon them.
 
 #### Run the example:
 1. Download a model in `.gguf` format. The [Nous-Hermes-2-Mistral-7b-DPO](https://huggingface.co/NousResearch/Nous-Hermes-2-Mistral-7B-DPO-GGUF/blob/main/Nous-Hermes-2-Mistral-7B-DPO.Q4_K_M.gguf) is a great instruction following model.
