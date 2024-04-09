@@ -1,7 +1,12 @@
 # TinyAgent
-***What is TinyAgent?*** Tiny Agent is a library designed to handle the execution of Large Language models in the traditional [Agent](https://www.promptingguide.ai/research/llm-agents) architecture *without* the complex abstraction of something like langchain. It strives to be lightweight, flexible and well documented. In it's base implementation, TinyAgent uses the [reAct](https://www.promptingguide.ai/techniques/react#how-it-works) prompt engineering method. This results in a "chain-of-thought" to solve each question. 
+***What is TinyAgent?*** Tiny Agent is a library designed to handle the execution of Large Language models in the traditional [Agent](https://www.promptingguide.ai/research/llm-agents) architecture *without* the complex abstraction of something like langchain. It strives to be lightweight, flexible and well documented.
 
-#### There are 7 main classes that make up TinyAgent
+## Base agents
+These agents are provided by TinyAgent out of the box. 
+- The [reAct](https://www.promptingguide.ai/techniques/react#how-it-works) prompt engineering method. This results in a "chain-of-thought" to solve each question. 
+- A chat agent. This results in a back and forth conversation stored in ram. When the program is closed, the memory is lost!
+
+## TinyAgent Abstract Classes
 - **Agent** - Handles the execution loop. It's essentially the "main" function.
 - **LLM** - Handles the inference of the large language model.
 - **Memory** - Handles the chat history using the *Message* class.
