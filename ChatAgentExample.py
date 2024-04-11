@@ -1,4 +1,4 @@
-from TinyAgent.agents.TinyChat import ChatAgent, ChatLLM, ChatMemory, ChatParser, ChatPrompt
+from TinyAgent.agents.TinyChat import ChatAgent, ChatLLM, ChatMemory, ChatOutputParser, ChatPrompt
 from TinyAgent.prompts.TinyChat import PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX
 from llama_cpp import Llama
 
@@ -18,7 +18,7 @@ llm = ChatLLM(Llama(
         n_ctx=10000,
         verbose=False))
 memory = ChatMemory()
-parser = ChatParser()
+parser = ChatOutputParser()
 agent = ChatAgent(prompt, memory, parser, [], llm)
 
 #Use the agent!

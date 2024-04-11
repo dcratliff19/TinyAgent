@@ -107,4 +107,5 @@ while True:
 # TODO:
 - Add in a debug logging functionality. It should be able to be turned on/off with a env variable change.
 - Support ChatGPT, Google Claud out of the box.
-- Change default toolset to something more usable for the average user.
+- Change default toolset to something more usable for the average user. Weather, Google search and a user input tool.
+- Refactor code base so that we can store implementations of different classes in folders. Example: the Agents folder currently stores entire agent implementations. This can be broken down.

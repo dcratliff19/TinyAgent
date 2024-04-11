@@ -1,5 +1,5 @@
 from TinyAgent.prompts.TinyReAct import PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX
-from TinyAgent.agents.TinyTool import ToolAgent, ToolPrompt, ToolMemory, ToolParser, ToolTool, ToolLLM
+from TinyAgent.agents.TinyTool import ToolAgent, ToolPrompt, ToolMemory, ToolOutputParser, ToolTool, ToolLLM
 from pywizlight import discovery
 from llama_cpp import Llama
 import asyncio
@@ -40,7 +40,7 @@ llm = ToolLLM(Llama(
 system_prompt = PREFIX + TOOLS + FORMAT_INSTRUCTIONS + SUFFIX
 prompt = ToolPrompt(system_prompt)
 memory = ToolMemory()
-parser = ToolParser()
+parser = ToolOutputParser()
 agent = ToolAgent(prompt, memory, parser, tools, llm)
 
 #Use the agent!

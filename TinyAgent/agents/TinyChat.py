@@ -28,13 +28,10 @@ class ChatMemory(Memory):
     def get_history(self):
         return super().get_history()
     
-class ChatParser(Parser):
+class ChatOutputParser(Parser):
 
     def __init__(self):
         return None
-    
-    def json_parse(self, string, first, last):
-        return super().json_parse(string, first, last)
 
     def parse(self, s, first, last):
         return super().parse(s, first, last)

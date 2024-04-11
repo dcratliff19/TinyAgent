@@ -1,4 +1,5 @@
 from TinyAgent import Agent, Prompt, Tool, Message, Memory, Parser, LLM
+from TinyAgent.parsers.jsonOutputParser import jsonOutputParser
 import json
 ##Implements the TinyAgent Library into a ToolAgent. Uses default functionality.
 class ToolLLM(LLM):
@@ -53,14 +54,11 @@ class ToolPrompt(Prompt):
     def reset_scractch_pad(self):
         return super().reset_scractch_pad()
     
-class ToolParser(Parser):
+class ToolOutputParser(jsonOutputParser):
 
     def __init__(self):
         return None
     
-    def json_parse(self, string, first, last):
-        return super().json_parse(string, first, last)
-
     def parse(self, s, first, last):
         return super().parse(s, first, last)
 
