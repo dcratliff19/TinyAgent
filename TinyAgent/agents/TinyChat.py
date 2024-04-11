@@ -1,7 +1,7 @@
 from TinyAgent import Agent, Prompt, Message, Memory, Parser, LLM
-
+from TinyAgent.llms.llamaLLM import llamaLLM
 ##Implements the TinyAgent Library into a TinyAgent. Uses default functionality.
-class ChatLLM(LLM):
+class ChatLLM(llamaLLM):
 
     def __init__(self, llm):
         super().__init__(llm)
