@@ -2,9 +2,9 @@ from abc import ABC, abstractmethod
 
 class LLM(ABC):
 
-    @abstractmethod
-    def __init__(self, llm):
+    def __init__(self, llm, stop = ["User:"]):
         self.llm = llm
+        self.stop = stop
     
     def query(self, query):
-        return self.llm(query, max_tokens=32000, stop=["Observation", "User:"])['choices'][0]['text']
+        raise NotImplementedError

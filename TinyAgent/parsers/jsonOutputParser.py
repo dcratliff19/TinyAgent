@@ -1,12 +1,10 @@
-from abc import ABC, abstractmethod
+from TinyAgent import Parser
 
-
-class jsonOutputParser(ABC):
+class jsonOutputParser(Parser):
 
     def __init__(self):
-        return None
+        super().__init__()
     
-    @abstractmethod
     def parse(self, string, first, last):
         try:
             start = string.index( first ) + len( first )

@@ -1,8 +1,9 @@
-from TinyAgent import Agent, Prompt, Tool, Message, Memory, Parser, LLM
+from TinyAgent import Agent, Prompt, Tool, Message, Memory
 from TinyAgent.parsers.jsonOutputParser import jsonOutputParser
+from TinyAgent.llms.llamaLLM import llamaLLM
 import json
 ##Implements the TinyAgent Library into a ToolAgent. Uses default functionality.
-class ToolLLM(LLM):
+class ToolLLM(llamaLLM):
 
     def __init__(self, llm):
         super().__init__(llm)
