@@ -1,4 +1,4 @@
-from TinyAgent import LLM
+from TinyAgent.abstracts.LLM import LLM
 class llamaLLM(LLM):
 
     def __init__(self, llm, stop = ["Observation", "User"]):

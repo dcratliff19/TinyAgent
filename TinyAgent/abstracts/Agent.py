@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from TinyAgent.Message import Message
+from TinyAgent.abstracts.Message import Message
 
 class Agent(ABC):
 
