@@ -32,7 +32,7 @@ class get_devices(ToolTool):
 tools = {"get_devices": get_devices()}
 #Assemble the components of the agent. 
 llm = ToolLLM(Llama(
-      model_path="models/Nous-Hermes-2-Mistral-7B-DPO.Q4_K_M.gguf",
+      model_path="models/Meta-Llama-3-8B-Instruct.Q4_K_M.gguf",
         n_batch=1000,
         n_gpu_layers=33,
         n_ctx=10000,
