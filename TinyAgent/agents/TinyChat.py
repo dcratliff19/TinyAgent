@@ -1,4 +1,4 @@
-from TinyAgent import Agent, Prompt, Message, Memory, Parser, LLM
+from TinyAgent import Agent, Message, Memory, Parser, LLM
 from TinyAgent.llms.llamaLLM import llamaLLM
 from TinyAgent.prompts.llama3InstructPrompt import llama3InstructPrompt
 ##Implements the TinyAgent Library into a TinyAgent. Uses default functionality.
@@ -45,7 +45,7 @@ class ChatAgent(Agent):
             
         return super().invoke(prompt)
 
-class ChatPrompt(llama3Instruct):
+class ChatPrompt(llama3InstructPrompt):
 
     def __init__(self, system_template):
         super().__init__(system_template)
