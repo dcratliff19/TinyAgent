@@ -22,7 +22,7 @@ class Agent(ABC):
         #Query the language model for a response.
         response = self.llm.query(self.prompt.get_prompt(self.memory))
         #Update the scratch pad with the response in case it is neede
-        self.memory.add_user_message(Message("ai", response))
+        self.memory.add_user_message(Message("agent", response))
             
         #return the response.
         return response

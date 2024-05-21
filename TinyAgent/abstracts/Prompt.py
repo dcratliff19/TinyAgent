@@ -6,11 +6,11 @@ class Prompt(ABC):
     def __init__(self, system_template):
         
         self.system_template = system_template
-        self.user_template = "\n<|im_start|>user \nUser: "
-        self.agent_template = "\n<|im_start|>assistant \nAgent: "
-        self.thought_template = "\n<|im_start|>assistant \nThought"
-        self.observation_template = "\n<|im_start|>assistant \nObservation"
-        self.end_template = "<|im_end|>\n"
+        self.user_template = ""
+        self.agent_template = ""
+        self.end_template = ""
+        self.thought_template = ""
+        self.observation_template = ""
 
         self.prompt = self.system_template
         self.scratch_pad = ""
@@ -27,7 +27,8 @@ class Prompt(ABC):
             else:
                 all_history += self.agent_template + message.content + self.end_template
 
-        return self.prompt + "\n" + all_history + self.scratch_pad
+        
+        return self.prompt + all_history + "\n" + self.scratch_pad
     
     
     @abstractmethod
