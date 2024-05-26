@@ -7,13 +7,12 @@ from googlesearch import search
 from duckduckgo_search import DDGS
 import bs4
 import urllib.request
+import logging
 
-llm = ToolLLM(Llama(
-      model_path="models/Meta-Llama-3-8B-Instruct.Q4_K_M.gguf",
-        n_batch=5000,
-        n_gpu_layers=33,
-        n_ctx=8000,
-        verbose=False))
+logger = logging.getLogger()
+logging.basicConfig(level=logging.INFO)
+
+llm = ToolLLM(Llama(model_path="models/Meta-Llama-3-8B-Instruct-Q6_K.gguf", temp=0.7, n_ctx=8000, verbose=False))
 
 ## Create a custom tool!
 class get_devices(ToolTool):
@@ -21,20 +20,21 @@ class get_devices(ToolTool):
     def run(self):
 
         all_devices = []
-
         loop = asyncio.get_event_loop()
         bulbs = loop.run_until_complete(discovery.discover_lights(broadcast_space="192.168.0.255"))
         for bulb in bulbs:
-
+            
             state = loop.run_until_complete(bulbs[0].updateState())
+
             all_devices.append({"device": bulb, 
                                 "brightness": state.get_brightness(), 
                                 "state": state.get_state(), 
                                 "color_temp": state.get_colortemp(), 
                                 "color_rbg": state.get_rgb()})
+            
 
-        return "List of all smart devices found - " + str(all_devices)
-    
+        return " The get_devices tool found the following devices on the network: " + str(all_devices)
+
     def error(self):
         return "No smart devices found."
 
@@ -67,7 +67,7 @@ class browser(ToolTool):
 
 
 
-tools = {"get_devices": get_devices(), "browser": browser()}
+tools = {"get_devices": get_devices()}
 #Assemble the components of the agent. 
 system_prompt = PREFIX + TOOLS + FORMAT_INSTRUCTIONS + SUFFIX
 prompt = ToolPrompt(system_prompt)

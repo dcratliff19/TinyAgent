@@ -25,10 +25,10 @@ class Prompt(ABC):
             if message.role == 'user':
                 all_history += self.user_template + message.content + self.end_template
             else:
-                all_history += self.agent_template + message.content + self.end_template
+                all_history += self.agent_template + str(message.content) + self.end_template
 
         
-        return self.prompt + all_history + "\n" + self.scratch_pad
+        return self.prompt + all_history + self.scratch_pad
     
     
     @abstractmethod

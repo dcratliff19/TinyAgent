@@ -7,9 +7,11 @@ class jsonOutputParser(Parser):
     
     def parse(self, string, first, last):
         try:
-            start = string.index( first ) + len( first )
-            end = string.rfind( last, 0 )
-            return string[start:end]
+            
+            cleaned_string = string.replace("json", "").replace("\\", "")
+            start = cleaned_string.index( first ) + len( first )
+            end = cleaned_string.rfind( last, 0 )
+            return cleaned_string[start:end]
         
         except ValueError:
             return "Invalid JSON string - " + string

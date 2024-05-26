@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from TinyAgent.abstracts.Message import Message
-
+import logging
 class Agent(ABC):
 
     def __init__(self, prompt, memory, parser, tools, llm, max_execution=5):
@@ -20,9 +20,11 @@ class Agent(ABC):
         #Add the user prompt to the memory
         self.memory.add_user_message(Message("user", prompt))
         #Query the language model for a response.
+        logging.debug(self.prompt.get_prompt(self.memory))
+
         response = self.llm.query(self.prompt.get_prompt(self.memory))
         #Update the scratch pad with the response in case it is neede
-        self.memory.add_user_message(Message("agent", response))
+        self.memory.add_user_message(Message("assistant", response))
             
         #return the response.
         return response
