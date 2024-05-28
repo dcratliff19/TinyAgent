@@ -38,8 +38,6 @@ Provide only ONE action per $JSON_BLOB, as shown:
 ```
 
 Follow this format:
-
-Question: input question to answer
 Thought: consider previous and subsequent steps
 Action:
 ```json

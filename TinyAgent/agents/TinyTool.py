@@ -111,7 +111,6 @@ class ToolAgent(Agent):
                     self.prompt.update_scratch_pad(self.prompt.observation_template + " " + str(tool_response) + self.prompt.thought_template)
 
             except Exception as e:
-                print("BROKE:",str(e))
                 self.prompt.update_scratch_pad(self.prompt.observation_template + " Your previous response did not contain a valid JSON response. Valid response example: ```json\n{\n response \n}\n```" + self.prompt.thought_template)
 
             execution_count += 1
