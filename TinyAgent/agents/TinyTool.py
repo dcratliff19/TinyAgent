@@ -94,7 +94,7 @@ class ToolAgent(Agent):
                 
                 logging.debug(response)
                 #Use the parser to parse out the json returned
-                action_json = json.loads(self.parser.parse(response, "```", "```"))
+                action_json = self.parser.parse(response, "```", "```")
                
                 if action_json["action"] == "Final Answer":
 

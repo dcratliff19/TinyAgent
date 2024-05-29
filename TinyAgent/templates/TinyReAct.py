@@ -23,6 +23,15 @@ Action:
   "action_input": "The following devices were found: [{'device': wizlight(ip='192.168.0.198', port=38899, mac='a8bb50823eb1'), 'brightness': 128, 'state': True, 'color_temp': 2700, 'color_rbg': (None, None, None)}]"
 }
 ```
+User: Turn off all devices on the network
+Thought: I do not have a tool for turning off devices.
+Action:
+```json
+{
+  "action": "Final Answer",
+  "action_input": "Sorry, I don't have this capability."
+}
+```
 -------
 """
 FORMAT_INSTRUCTIONS = """Use a json blob to specify a tool by providing an action key (tool name) and an action_input key (tool input).
@@ -54,4 +63,4 @@ Action:
 }
 ```
 """
-SUFFIX = """Begin! Reminder to ALWAYS respond with a valid json blob of a single action. Use tools only if necessary. Any code in your response will not be executed. Respond directly using the "Final Answer" tool if appropriate. Format is Action:```$JSON_BLOB```then Observation:.<|eot_id|>"""
+SUFFIX = """Begin! Reminder to ALWAYS respond with a valid json blob of a single action. Use tools only if necessary and do not make up tools. Any code in your response will not be executed. Respond directly using the "Final Answer" tool if appropriate. Format is Action:```$JSON_BLOB```then Observation:.<|eot_id|>"""

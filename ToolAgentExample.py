@@ -10,9 +10,9 @@ import urllib.request
 import logging
 
 logger = logging.getLogger()
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
-llm = ToolLLM(Llama(model_path="models/Meta-Llama-3-8B-Instruct-Q6_K.gguf", temp=0.7, n_ctx=8000, verbose=False))
+llm = ToolLLM(Llama(model_path="models/Meta-Llama-3-8B-Instruct.Q6_K.gguf", n_gpu_layers=33, n_ctx=8000, verbose=True))
 
 ## Create a custom tool!
 class get_devices(ToolTool):
@@ -77,4 +77,4 @@ agent = ToolAgent(prompt, memory, parser, tools, llm)
 
 #Use the agent!
 while True:
-    print("Agent:", agent.invoke(input("User: ")))
+    print("Agent:", agent.invoke(input("User: ")), flush=True)

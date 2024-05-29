@@ -21,7 +21,7 @@ class Prompt(ABC):
         
         #Combine the messages into one history
         all_history = ""
-        for message in memory.history[:10]:
+        for message in memory.history:
             if message.role == 'user':
                 all_history += self.user_template + message.content + self.end_template
             else:
