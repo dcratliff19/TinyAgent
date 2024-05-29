@@ -6,11 +6,11 @@ class Prompt(ABC):
     def __init__(self, system_template):
         
         self.system_template = system_template
-        self.user_template = "\n<|im_start|>user \nUser: "
-        self.agent_template = "\n<|im_start|>assistant \nAgent: "
-        self.thought_template = "\n<|im_start|>assistant \nThought"
-        self.observation_template = "\n<|im_start|>assistant \nObservation"
-        self.end_template = "<|im_end|>\n"
+        self.user_template = ""
+        self.agent_template = ""
+        self.end_template = ""
+        self.thought_template = ""
+        self.observation_template = ""
 
         self.prompt = self.system_template
         self.scratch_pad = ""
@@ -21,13 +21,14 @@ class Prompt(ABC):
         
         #Combine the messages into one history
         all_history = ""
-        for message in memory.history[:10]:
+        for message in memory.history:
             if message.role == 'user':
                 all_history += self.user_template + message.content + self.end_template
             else:
-                all_history += self.agent_template + message.content + self.end_template
+                all_history += self.agent_template + str(message.content) + self.end_template
 
-        return self.prompt + "\n" + all_history + self.scratch_pad
+        
+        return self.prompt + all_history + self.scratch_pad
     
     
     @abstractmethod

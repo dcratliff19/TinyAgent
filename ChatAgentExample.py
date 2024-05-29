@@ -1,5 +1,5 @@
-from TinyAgent.agents.TinyChat import ChatAgent, ChatLLM, ChatMemory, ChatParser, ChatPrompt
-from TinyAgent.prompts.TinyChat import PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX
+from TinyAgent.agents.TinyChat import ChatAgent, ChatLLM, ChatMemory, ChatOutputParser, ChatPrompt
+from TinyAgent.templates.TinyChat import PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX
 from llama_cpp import Llama
 
 #Change this value based on your model and your GPU VRAM pool.
@@ -11,14 +11,9 @@ n_batch = 10000
 #Assemble the components of the agent. 
 system_template = PREFIX + TOOLS + FORMAT_INSTRUCTIONS + SUFFIX
 prompt = ChatPrompt(system_template)
-llm = ChatLLM(Llama(
-        model_path="models/Nous-Hermes-2-Mistral-7B-DPO.Q4_K_M.gguf",
-        n_batch=n_batch,
-        n_gpu_layers=n_gpu_layers,
-        n_ctx=10000,
-        verbose=False))
+llm = ChatLLM(Llama(model_path="models/Meta-Llama-3-8B-Instruct.Q4_K_M.gguf", verbose=False, n_ctx=8000))
 memory = ChatMemory()
-parser = ChatParser()
+parser = ChatOutputParser()
 agent = ChatAgent(prompt, memory, parser, [], llm)
 
 #Use the agent!

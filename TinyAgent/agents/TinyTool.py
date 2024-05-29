@@ -1,7 +1,11 @@
-from TinyAgent import Agent, Prompt, Tool, Message, Memory, Parser, LLM
+from TinyAgent import Agent, Tool, Message, Memory
+from TinyAgent.parsers.jsonOutputParser import jsonOutputParser
+from TinyAgent.llms.llamaLLM import llamaLLM
+from TinyAgent.prompts.llama3InstructPrompt import llama3InstructPrompt
 import json
+import logging
 ##Implements the TinyAgent Library into a ToolAgent. Uses default functionality.
-class ToolLLM(LLM):
+class ToolLLM(llamaLLM):
 
     def __init__(self, llm):
         super().__init__(llm)
@@ -39,7 +43,7 @@ class ToolMemory(Memory):
         return super().get_history()
 
 
-class ToolPrompt(Prompt):
+class ToolPrompt(llama3InstructPrompt):
 
     def __init__(self, system_template):
         super().__init__(system_template)
@@ -53,43 +57,45 @@ class ToolPrompt(Prompt):
     def reset_scractch_pad(self):
         return super().reset_scractch_pad()
     
-class ToolParser(Parser):
+class ToolOutputParser(jsonOutputParser):
 
     def __init__(self):
         return None
     
-    def json_parse(self, string, first, last):
-        return super().json_parse(string, first, last)
-
     def parse(self, s, first, last):
         return super().parse(s, first, last)
 
         
 class ToolAgent(Agent):
 
-    def __init__(self, promptManager, memory, outputParser, tools, llm, max_execution=5):
+    def __init__(self, promptManager, memory, outputParser, tools, llm, max_execution=10):
         super().__init__(promptManager, memory, outputParser, tools, llm, max_execution)
     
     def invoke(self, prompt):
         #Clear the scratch pad
         self.prompt.reset_scractch_pad()
+        self.prompt.scratch_pad = self.prompt.agent_template + self.prompt.thought_template
+
         #Add the prompt memory
         self.memory.add_user_message(Message("user", prompt))
         #Force a thought
-        self.prompt.update_scratch_pad(self.prompt.thought_template + " 1:")
         execution_count = 1
         
         #Only allow x amount executions.
         while execution_count < self.max_execution:
-
+            logging.debug(self.prompt.get_prompt(self.memory))
             #Query the language model for a response.
             response = self.llm.query(self.prompt.get_prompt(self.memory))
             #Update the scratch pad with the response in case it is needed 
             #on another loop.
-            self.prompt.update_scratch_pad(response)
+            logging.debug(response)
+            self.prompt.update_scratch_pad(response) 
             try:
+                
+                logging.debug(response)
                 #Use the parser to parse out the json returned
-                action_json = json.loads(self.parser.parse(response, "```json", "```"))
+                action_json = self.parser.parse(response, "```", "```")
+               
                 if action_json["action"] == "Final Answer":
 
                     self.memory.add_agent_message(Message("agent", action_json['action_input']))
@@ -97,12 +103,16 @@ class ToolAgent(Agent):
                     
                 if action_json["action"] in self.tools:
                     #Call the tool and update the scratch pad with the response.
-                    tool_response = self.tools[action_json["action"]].run()
-                    self.prompt.update_scratch_pad(self.prompt.observation_template + " " + str(execution_count) + ": " + str(tool_response) + self.prompt.thought_template + " " + str(execution_count + 1) + ":")
-                
+                    if action_json['action_input']:
+                        tool_response = self.tools[action_json["action"]].run(action_json['action_input'])
+                    else:
+                        tool_response = self.tools[action_json["action"]].run()
+
+                    self.prompt.update_scratch_pad(self.prompt.observation_template + " " + str(tool_response) + self.prompt.thought_template)
+
             except Exception as e:
-                self.prompt.update_scratch_pad(self.prompt.observation_template + " " + str(execution_count) + ": Your previous response did not contain a valid JSON response. The following error was found - " + str(e) + self.prompt.thought_template + " " + str(execution_count) + ":")
-            
+                self.prompt.update_scratch_pad(self.prompt.observation_template + " Your previous response did not contain a valid JSON response. Valid response example: ```json\n{\n response \n}\n```" + self.prompt.thought_template)
+
             execution_count += 1
 
         ##Base case. Returns if the loop ends.
