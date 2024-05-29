@@ -13,7 +13,7 @@ class Agent(ABC):
         self.max_execution = max_execution
 
     @abstractmethod
-    def invoke(self, prompt):
+    def invoke(self, prompt, **kwargs):
 
         #Set the scratch pad to the agent template.
         self.prompt.scratch_pad = self.prompt.agent_template
@@ -21,9 +21,9 @@ class Agent(ABC):
         self.memory.add_user_message(Message("user", prompt))
         #Query the language model for a response.
         logging.debug(self.prompt.get_prompt(self.memory))
-
-        response = self.llm.query(self.prompt.get_prompt(self.memory))
-        #Update the scratch pad with the response in case it is neede
+        
+        response = self.llm.query(self.prompt.get_prompt(self.memory), **kwargs)
+        #Update the memory with the response in case it is neede
         self.memory.add_user_message(Message("assistant", response))
             
         #return the response.

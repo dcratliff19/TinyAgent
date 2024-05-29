@@ -7,8 +7,8 @@ class ChatLLM(llamaLLM):
     def __init__(self, llm):
         super().__init__(llm)
     
-    def query(self, query):
-        return super().query(query)
+    def query(self, query, **kwargs):
+        return super().query(query, **kwargs)
 
 class ChatMessage(Message):
     
@@ -41,9 +41,10 @@ class ChatAgent(Agent):
     def __init__(self, promptManager, memory, outputParser, tools, llm, max_execution=5):
         super().__init__(promptManager, memory, outputParser, tools, llm, max_execution)
     
-    def invoke(self, prompt):
+    def invoke(self, prompt, **kwargs):
             
-        return super().invoke(prompt)
+        return super().invoke(prompt, **kwargs)
+            
 
 class ChatPrompt(llama3InstructPrompt):
 
