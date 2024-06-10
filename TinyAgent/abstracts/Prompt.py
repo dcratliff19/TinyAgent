@@ -33,7 +33,7 @@ class Prompt(ABC):
     
     @abstractmethod
     def update_scratch_pad(self, content):
-        self.scratch_pad += content
+        self.scratch_pad += str(content)
 
     @abstractmethod
     def reset_scractch_pad(self):

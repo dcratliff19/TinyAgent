@@ -6,7 +6,7 @@ logging.basicConfig(level=logging.INFO)
 system_template = """<|start_header_id|>system<|end_header_id|>\n\nYou are TinyAgent, a super intelligent AI with the personality of JARVIS from Iron Man. You are can help user's with a variety of task, or just chat with them.<|eot_id|>"""
 #Assemble the components of the agent. 
 prompt = ChatPrompt(system_template)
-llm = ChatLLM(Llama(model_path="models/Meta-Llama-3-8B-Instruct.Q6_K.gguf", verbose=False, n_ctx=8000))
+llm = ChatLLM(Llama(model_path="models/Meta-Llama-3-8B-Instruct.Q6_K.gguf", verbose=False, n_gpu_layers=33, n_ctx=8000))
 memory = ChatMemory()
 parser = ChatOutputParser()
 agent = ChatAgent(prompt, memory, parser, [], llm)

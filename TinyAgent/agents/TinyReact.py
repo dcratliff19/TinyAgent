@@ -85,7 +85,7 @@ class ReactAgent(Agent):
         while execution_count < self.max_execution:
             logging.debug(self.prompt.get_prompt(self.memory))
             #Query the language model for a response.
-            response = self.llm.query(self.prompt.get_prompt(self.memory))
+            response = self.llm.query(self.prompt.get_prompt(self.memory))['choices'][0]['text']
             #Update the scratch pad with the response in case it is needed 
             #on another loop.
             logging.debug(response)
@@ -94,7 +94,7 @@ class ReactAgent(Agent):
                 
                 logging.debug(response)
                 #Use the parser to parse out the json returned
-                action_json = json.loads(self.parser.parse(response, "```", "```"))
+                action_json = json.loads("{" + self.parser.parse(response, "{", "}") + "}")
                
                 if action_json["action"] == "Final Answer":
 

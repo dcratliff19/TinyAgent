@@ -4,7 +4,6 @@ from pywizlight import discovery
 from llama_cpp import Llama
 import asyncio
 from googlesearch import search
-from duckduckgo_search import DDGS
 import bs4
 import urllib.request
 import logging
@@ -12,7 +11,7 @@ import logging
 logger = logging.getLogger()
 logging.basicConfig(level=logging.DEBUG)
 
-llm = ReactLLM(Llama(model_path="models/Meta-Llama-3-8B-Instruct.Q6_K.gguf", n_gpu_layers=33, n_ctx=8000, verbose=True))
+llm = ReactLLM(Llama(model_path="models/Meta-Llama-3-8B-Instruct.Q6_K.gguf", temp=0.1, n_batch=8000, n_gpu_layers=33, n_ctx=8000, verbose=True))
 
 ## Create a custom tool!
 class get_devices(ReactTool):
@@ -37,34 +36,6 @@ class get_devices(ReactTool):
 
     def error(self):
         return "No smart devices found."
-
-
-## Create a custom tool!
-class browser(ReactTool):
-    
-    def run(self, term):
-        result_text = ""
-        
-        results = DDGS().text(term, max_results=5)
-        for result in results:
-            try:
-                webpage=str(urllib.request.urlopen(result['href']).read())
-                soup = bs4.BeautifulSoup(webpage)  
-            except:
-                continue
-            result_text += "\nWeb Page: " + result['href']
-            ##Call another tiny agent here to summarize the webpage.
-            ## summary = summaryAgent.invoke(soup.get_text())
-            ## result_text += "\nInfo Found: " + summary
-            result_text += "\nInfo Found: " + soup.get_text()
-        
-        return "Web search results - " + str(result_text)
-    
-    def error(self):
-        return "No search results found."
-
-
-
 
 
 tools = {"get_devices": get_devices()}
