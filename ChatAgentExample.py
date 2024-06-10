@@ -1,21 +1,21 @@
 from TinyAgent.agents.TinyChat import ChatAgent, ChatLLM, ChatMemory, ChatOutputParser, ChatPrompt
-from TinyAgent.templates.TinyChat import PREFIX, TOOLS, FORMAT_INSTRUCTIONS, SUFFIX
 from llama_cpp import Llama
+import logging
 
-#Change this value based on your model and your GPU VRAM pool.
-n_gpu_layers = 33 
-#Should be between 1 and n_ctx, consider the amount of VRAM in your GPU.
-n_batch = 10000  
-
-
+logging.basicConfig(level=logging.INFO)
+system_template = """<|start_header_id|>system<|end_header_id|>\n\nYou are TinyAgent, a super intelligent AI with the personality of JARVIS from Iron Man. You are can help user's with a variety of task, or just chat with them.<|eot_id|>"""
 #Assemble the components of the agent. 
-system_template = PREFIX + TOOLS + FORMAT_INSTRUCTIONS + SUFFIX
 prompt = ChatPrompt(system_template)
-llm = ChatLLM(Llama(model_path="models/Meta-Llama-3-8B-Instruct.Q4_K_M.gguf", verbose=False, n_ctx=8000))
+llm = ChatLLM(Llama(model_path="models/Meta-Llama-3-8B-Instruct.Q6_K.gguf", verbose=False, n_gpu_layers=33, n_ctx=8000))
 memory = ChatMemory()
 parser = ChatOutputParser()
 agent = ChatAgent(prompt, memory, parser, [], llm)
 
 #Use the agent!
 while True:
-  print("Agent:", agent.invoke(input("User: ")))
+  user_prompt = input("User: ")
+  print("Agent: ", end="")
+  for token in agent.invoke(user_prompt, stream=True):
+    print(token['choices'][0]['text'], end="", flush=True)
+
+  print()

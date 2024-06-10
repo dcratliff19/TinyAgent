@@ -4,7 +4,7 @@ import bs4
 import urllib.request
 
 
-results = DDGS().text("current weather", max_results=3)
+results = DDGS().text("weather tomorrow in pilot va", max_results=3)
 for result in results:
     webpage=str(urllib.request.urlopen(result['href']).read())
     soup = bs4.BeautifulSoup(webpage)   

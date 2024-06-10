@@ -10,8 +10,8 @@ These agents are provided by TinyAgent out of the box.
 - **Agent** - Handles the execution loop. It's essentially the "main" function.
 - **LLM** - Handles the inference of the large language model.
 - **Memory** - Handles the chat history using the *Message* class.
-- **Message** - Handles user or agent messages. 
-- **Parser** - Handles parsing the output of language model.
+- **Message** - Handles storage and retrieval of user or agent messages. 
+- **Parser** - Handles parsing the output of language model. 
 - **Prompt** - Handles the prompt assembly. 
 - **Tool** - Handles execution of tools when an LLM calls upon them.
 
