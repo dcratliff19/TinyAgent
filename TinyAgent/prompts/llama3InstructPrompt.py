@@ -1,4 +1,4 @@
-from TinyAgent.abstracts.Prompt import Prompt
+from TinyAgent.tiny.Prompt import Prompt
 
 class llama3InstructPrompt(Prompt):
     def __init__(self, system_template):

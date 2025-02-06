@@ -1,4 +1,4 @@
-from TinyAgent.abstracts import Parser
+from TinyAgent.tiny import Parser
 
 class jsonOutputParser(Parser):
 

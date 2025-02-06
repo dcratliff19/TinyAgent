@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from TinyAgent.abstracts.Message import Message
+from TinyAgent.tiny.Message import Message
 import logging
 class Agent(ABC):
 
